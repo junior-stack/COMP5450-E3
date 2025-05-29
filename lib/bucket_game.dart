@@ -34,7 +34,7 @@ class BucketGame extends FlameGame with HasCollisionDetection, HasKeyboardHandle
     add(bucket);
 
     scoreText = ScoreText()
-      ..position = Vector2(size.x - 10, 10);
+      ..position = Vector2(size.x - 10, 30);
     add(scoreText);
 
     gameObjects.addAll([bucket, scoreText]);

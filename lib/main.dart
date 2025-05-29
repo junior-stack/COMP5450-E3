@@ -12,11 +12,18 @@ void main() {
             'StartOverlay': (context, game) => Center(
               child: ElevatedButton(onPressed: () => (game as BucketGame).startGame(), child: const Text('Start Game')),
             ),
-            'ResetButtonOverlay': (context, game) => Positioned(
-                top: 20,
-                left: 20,
-                child: ElevatedButton(onPressed: () => (game as BucketGame).resetGame(), child: const Text('Restart'))
-            )
+            'ResetButtonOverlay': (context, game) => SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: ElevatedButton(
+                    onPressed: () => (game as BucketGame).resetGame(),
+                    child: const Text('Restart'),
+                  ),
+                ),
+              ),
+            ),
         },
     ),
   ),);
