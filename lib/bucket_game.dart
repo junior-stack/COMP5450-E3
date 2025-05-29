@@ -13,6 +13,9 @@ class BucketGame extends FlameGame with HasCollisionDetection, HasKeyboardHandle
   double spawnTimer = 0.0;
 
   @override
+  Color backgroundColor() => Colors.blue;
+
+  @override
   Future<void> onLoad() async {
     bucket = Bucket();
     add(bucket);
