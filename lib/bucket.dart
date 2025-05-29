@@ -2,9 +2,13 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/services.dart';
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 
 class Bucket extends SpriteComponent
-    with HasGameRef, KeyboardHandler {
+    with HasGameRef, KeyboardHandler, DragCallbacks {
+
   double moveSpeed = 300;
   bool moveLeft = false;
   bool moveRight = false;
@@ -21,10 +25,12 @@ class Bucket extends SpriteComponent
   @override
   void update(double dt) {
     super.update(dt);
-    if (moveLeft) {
-      position.x -= moveSpeed * dt;
-    } else if (moveRight) {
-      position.x += moveSpeed * dt;
+    if (kIsWeb) {
+      if (moveLeft) {
+        position.x -= moveSpeed * dt;
+      } else if (moveRight) {
+        position.x += moveSpeed * dt;
+      }
     }
 
     position.clamp(Vector2.zero(), gameRef.size - size);
@@ -32,8 +38,18 @@ class Bucket extends SpriteComponent
 
   @override
   bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    moveLeft = keysPressed.contains(LogicalKeyboardKey.arrowLeft);
-    moveRight = keysPressed.contains(LogicalKeyboardKey.arrowRight);
+    if (kIsWeb) {
+      moveLeft = keysPressed.contains(LogicalKeyboardKey.arrowLeft);
+      moveRight = keysPressed.contains(LogicalKeyboardKey.arrowRight);
+    }
     return true; // Event handled
+  }
+
+  @override
+  void onDragUpdate(DragUpdateEvent event){
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+      position.x += event.localDelta.x;
+      position.clamp(Vector2.zero(), gameRef.size - size);
+    }
   }
 }
