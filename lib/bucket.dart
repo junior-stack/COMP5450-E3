@@ -1,3 +1,4 @@
+import 'package:demo/bucket_game.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 
 class Bucket extends SpriteComponent
-    with HasGameRef, KeyboardHandler, DragCallbacks {
+    with HasGameReference<BucketGame>, KeyboardHandler, DragCallbacks {
 
   double moveSpeed = 300;
   bool moveLeft = false;
@@ -18,7 +19,7 @@ class Bucket extends SpriteComponent
   @override
   Future<void> onLoad() async {
     sprite = await Sprite.load('bucket.png');
-    position = Vector2(gameRef.size.x / 2 - size.x / 2, gameRef.size.y - 120);
+    position = Vector2(game.size.x / 2 - size.x / 2, game.size.y - 120);
     add(RectangleHitbox());
   }
 
@@ -33,7 +34,7 @@ class Bucket extends SpriteComponent
       }
     }
 
-    position.clamp(Vector2.zero(), gameRef.size - size);
+    position.clamp(Vector2.zero(), game.size - size);
   }
 
   @override
@@ -49,7 +50,7 @@ class Bucket extends SpriteComponent
   void onDragUpdate(DragUpdateEvent event){
     if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       position.x += event.localDelta.x;
-      position.clamp(Vector2.zero(), gameRef.size - size);
+      position.clamp(Vector2.zero(), game.size - size);
     }
   }
 }

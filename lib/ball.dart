@@ -4,13 +4,13 @@ import 'package:flame/collisions.dart';
 import 'dart:math';
 import 'bucket.dart';
 
-class Ball extends SpriteComponent with HasGameRef<BucketGame>, CollisionCallbacks {
+class Ball extends SpriteComponent with HasGameReference<BucketGame>, CollisionCallbacks {
   Ball() : super(size: Vector2.all(30));
 
   @override
   Future<void> onLoad() async {
     sprite = await Sprite.load('ball.png');
-    position = Vector2(Random().nextDouble() * gameRef.size.x, 0);
+    position = Vector2(Random().nextDouble() * game.size.x, 0);
     add(RectangleHitbox());
   }
 
@@ -18,7 +18,7 @@ class Ball extends SpriteComponent with HasGameRef<BucketGame>, CollisionCallbac
   void update(double dt) {
     super.update(dt);
     position.y += 200 * dt;
-    if (position.y > gameRef.size.y) {
+    if (position.y > game.size.y) {
       removeFromParent();
     }
   }
@@ -26,7 +26,7 @@ class Ball extends SpriteComponent with HasGameRef<BucketGame>, CollisionCallbac
   @override
   void onCollision(Set<Vector2> points, PositionComponent other) {
     if (other is Bucket) {
-      gameRef.scoreText.updateScore(1);
+      game.scoreText.updateScore(1);
       removeFromParent();
     }
   }
